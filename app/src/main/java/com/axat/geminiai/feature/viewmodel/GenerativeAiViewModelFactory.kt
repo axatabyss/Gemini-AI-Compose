@@ -18,24 +18,14 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
 
         return with(viewModelClass) {
             when {
-                isAssignableFrom(SummarizeViewModel::class.java) -> {
+                isAssignableFrom(ChatViewModel::class.java) -> {
                     val generativeModel = GenerativeModel(
                         modelName = "gemini-pro",
                         apiKey = BuildConfig.GEMINI_API_KEY,
                         generationConfig = config
                     )
-                    SummarizeViewModel(generativeModel)
+                    ChatViewModel(generativeModel)
                 }
-
-//                isAssignableFrom(ChatViewModel::class.java) -> {
-//                    val generativeModel = GenerativeModel(
-//                        modelName = "gemini-pro",
-//                        apiKey = BuildConfig.apiKey,
-//                        generationConfig = config
-//                    )
-//                    ChatViewModel(generativeModel)
-//                }
-
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${viewModelClass.name}")
             }

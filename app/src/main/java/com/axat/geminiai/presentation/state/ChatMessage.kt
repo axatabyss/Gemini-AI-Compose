@@ -1,5 +1,4 @@
-package com.axat.geminiai.feature.state
-
+package com.axat.geminiai.presentation.state
 
 import java.util.UUID
 

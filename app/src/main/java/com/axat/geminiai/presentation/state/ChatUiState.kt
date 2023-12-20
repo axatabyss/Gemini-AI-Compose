@@ -1,6 +1,7 @@
-package com.axat.geminiai.feature.state
+package com.axat.geminiai.presentation.state
 
 import androidx.compose.runtime.toMutableStateList
+
 
 class ChatUiState(
     messages: List<ChatMessage> = emptyList()

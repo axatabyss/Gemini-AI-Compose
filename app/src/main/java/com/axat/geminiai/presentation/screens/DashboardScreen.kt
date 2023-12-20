@@ -1,4 +1,4 @@
-package com.axat.geminiai.feature.screens
+package com.axat.geminiai.presentation.screens
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -41,22 +41,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.axat.geminiai.feature.state.ChatMessage
-import com.axat.geminiai.feature.state.Participant
-import com.axat.geminiai.feature.viewmodel.ChatViewModel
-import com.axat.geminiai.feature.viewmodel.GenerativeViewModelFactory
+import com.axat.geminiai.presentation.state.ChatMessage
+import com.axat.geminiai.presentation.state.Participant
+import com.axat.geminiai.presentation.viewmodel.DashboardViewModel
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun DashboardScreen(
+fun DashboardScreen(
     navHostController: NavHostController,
-    chatViewModel: ChatViewModel = viewModel(factory = GenerativeViewModelFactory)
+    dashboardViewModel: DashboardViewModel = hiltViewModel()
 ) {
-    val chatUiState by chatViewModel.uiState.collectAsState()
+    val chatUiState by dashboardViewModel.uiState.collectAsState()
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -75,7 +74,7 @@ internal fun DashboardScreen(
         bottomBar = {
             MessageInput(
                 onSendMessage = { inputText ->
-                    chatViewModel.sendMessage(inputText)
+                    dashboardViewModel.sendMessage(inputText)
                 },
                 resetScroll = {
                     coroutineScope.launch {

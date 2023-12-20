@@ -1,27 +1,29 @@
-package com.axat.geminiai.feature.viewmodel
+package com.axat.geminiai.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.axat.geminiai.feature.state.ChatMessage
-import com.axat.geminiai.feature.state.ChatUiState
-import com.axat.geminiai.feature.state.Participant
+import com.axat.geminiai.presentation.state.ChatMessage
+import com.axat.geminiai.presentation.state.ChatUiState
+import com.axat.geminiai.presentation.state.Participant
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.asTextOrNull
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChatViewModel(
-    generativeModel: GenerativeModel
+
+@HiltViewModel
+class DashboardViewModel @Inject constructor(
+    private val generativeModel: GenerativeModel,
 ) : ViewModel() {
-    private val chat = generativeModel.startChat(
 
-    )
+    private val chat = generativeModel.startChat()
 
     private val _uiState: MutableStateFlow<ChatUiState> =
         MutableStateFlow(ChatUiState(chat.history.map { content ->
-            // Map the initial messages
             ChatMessage(
                 text = content.parts.first().asTextOrNull() ?: "",
                 participant = if (content.role == "user") Participant.USER else Participant.MODEL,
@@ -33,7 +35,6 @@ class ChatViewModel(
 
 
     fun sendMessage(userMessage: String) {
-        // Add a pending message
         _uiState.value.addMessage(
             ChatMessage(
                 text = userMessage,
@@ -68,4 +69,6 @@ class ChatViewModel(
             }
         }
     }
+
+
 }
